@@ -1,4 +1,6 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Message {
@@ -9,11 +11,12 @@ interface Message {
 }
 
 export function ChatBot() {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Olá! Sou Amanda, sua assistente virtual da Compute Capital. Como posso ajudá-lo hoje?',
+      text: t('chatbot.intro'),
       isUser: false,
       timestamp: new Date()
     }
@@ -30,14 +33,18 @@ export function ChatBot() {
     scrollToBottom();
   }, [messages]);
 
-  const amandaResponses = [
-    "Ótima pergunta! A Compute Capital tem três verticais principais: Investimentos, C2 AI Studio para soluções em IA, e Solar Recife para energia renovável.",
-    "Nosso fundo de investimentos foca em startups de tecnologia disruptiva. Procuramos empresas com potencial de transformar mercados.",
-    "O C2 AI Studio desenvolve soluções personalizadas em inteligência artificial para empresas de diversos setores.",
-    "A Solar Recife oferece sistemas de energia solar fotovoltaica para residências e empresas em Pernambuco.",
-    "Estamos sempre em busca de oportunidades inovadoras. Gostaria de saber mais sobre alguma área específica?",
-    "Posso conectá-lo com nossa equipe especializada. Que tipo de parceria ou investimento você tem em mente?"
-  ];
+  const amandaResponses: string[] = t('chatbot.responses', { returnObjects: true }) as string[];
+
+  useEffect(() => {
+    // Atualiza a mensagem inicial quando o idioma muda
+    setMessages((prev) => {
+      const first = prev[0];
+      if (!first || first.isUser) return prev;
+      const updated = { ...first, text: t('chatbot.intro') };
+      return [updated, ...prev.slice(1)];
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -97,8 +104,8 @@ export function ChatBot() {
           
           {/* Text */}
           <div className="hidden lg:block text-left">
-            <p className="text-white font-semibold text-sm font-[DM_Sans]">Fale com Amanda</p>
-            <p className="text-white/70 text-xs font-[DM_Sans]">IA • Online agora</p>
+            <p className="text-white font-semibold text-sm font-[DM_Sans]">{t('chatbot.openCta')}</p>
+            <p className="text-white/70 text-xs font-[DM_Sans]">{t('chatbot.onlineNow')}</p>
           </div>
         </div>
         
@@ -139,7 +146,7 @@ export function ChatBot() {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold text-sm font-[DM_Sans]">Amanda</h3>
-                      <p className="text-white/70 text-xs font-[DM_Sans]">Assistente Virtual</p>
+                      <p className="text-white/70 text-xs font-[DM_Sans]">{t('chatbot.role')}</p>
                     </div>
                   </div>
                   <button
@@ -200,7 +207,7 @@ export function ChatBot() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Digite sua mensagem..."
+                    placeholder={t('chatbot.placeholder')}
                     className="flex-1 glass border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/50 text-sm font-[DM_Sans] resize-none focus:outline-none focus:border-[#18d2e4]/50 transition-colors"
                     rows={1}
                     style={{ backdropFilter: 'blur(16px)' }}

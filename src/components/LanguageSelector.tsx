@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 interface Language {
   code: string;
@@ -8,19 +9,32 @@ interface Language {
 }
 
 const languages: Language[] = [
-  { code: 'pt-BR', name: 'Português', flag: '🇧🇷' },
-  { code: 'en-US', name: 'English', flag: '🇺🇸' },
-  { code: 'es-ES', name: 'Español', flag: '🇪🇸' }
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' }
 ];
 
 export function LanguageSelector() {
+  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const initialCode = (i18n.language || 'pt').split('-')[0];
+  const initialLang = languages.find(l => l.code === initialCode) || languages[0];
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(initialLang);
 
   const handleLanguageChange = (language: Language) => {
     setSelectedLanguage(language);
     setIsOpen(false);
+    i18n.changeLanguage(language.code);
   };
+
+  useEffect(() => {
+    const code = (i18n.language || 'pt').split('-')[0];
+    const lang = languages.find(l => l.code === code);
+    if (lang && lang.code !== selectedLanguage.code) {
+      setSelectedLanguage(lang);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   return (
     <div className="relative">
@@ -37,7 +51,7 @@ export function LanguageSelector() {
             {selectedLanguage.name}
           </span>
           <span className="text-white font-medium text-sm font-[DM_Sans] block sm:hidden">
-            {selectedLanguage.code.split('-')[0].toUpperCase()}
+            {selectedLanguage.code.toUpperCase()}
           </span>
         </div>
         

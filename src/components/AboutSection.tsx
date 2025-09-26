@@ -1,10 +1,13 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export function AboutSection() {
+  const { t } = useTranslation();
   const [displayText, setDisplayText] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const fullText = "Sobre Nós";
+  const fullText = t('about.aboutUs');
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export function AboutSection() {
     }, 100);
     
     return () => clearInterval(typingInterval);
-  }, [isVisible]);
+  }, [isVisible, fullText]);
 
   return (
     <section className="relative py-24 px-6 overflow-hidden binary-bg">
@@ -137,7 +140,7 @@ export function AboutSection() {
             <span className={`text-[#18d2e4] ${isVisible ? 'animate-pulse' : ''}`}>|</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Conheça nossa história e visão para o futuro da tecnologia
+            {t('about.subtitle')}
           </p>
         </div>
         
@@ -146,27 +149,21 @@ export function AboutSection() {
           {/* Text Content */}
           <div className="glass p-8 rounded-2xl">
             <div className="space-y-6">
-              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base">
-                A <span className="bg-gradient-to-r from-[#18e492] to-[#18d2e4] bg-clip-text text-transparent font-semibold">Compute Capital</span> é um grupo brasileiro AI-Native que integra tecnologia, energia e investimentos. Atuamos no desenvolvimento de software com inteligência artificial, na geração de energia solar com fazendas no Nordeste, na operação de data centers de GPUs e investimentos em ativos físicos e alternativos.
-              </p>
+              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base" dangerouslySetInnerHTML={{ __html: t('about.p1') }} />
               
-              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base">
-                Liderados por jovens empreendedores com mais de 10 anos de experiência, buscamos antecipar os desafios de 2050, criando infraestrutura e soluções que impulsionam negócios e promovem crescimento sustentável.
-              </p>
+              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base">{t('about.p2')}</p>
               
-              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base">
-                Nossa <span className="bg-gradient-to-r from-[#18d2e4] to-[#f48101] bg-clip-text text-transparent font-semibold">missão</span> é conectar IA, energia e inovação para gerar impacto real no presente e no futuro.
-              </p>
+              <p className="text-white/90 leading-relaxed font-[DM_Sans] text-base" dangerouslySetInnerHTML={{ __html: t('about.p3') }} />
 
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/10">
                 <div className="text-center">
                   <div className="text-2xl font-bold bg-gradient-to-r from-[#18e492] to-[#18d2e4] bg-clip-text text-transparent font-[DM_Sans]">10+</div>
-                  <div className="text-white/60 text-sm font-[DM_Sans]">Anos de Experiência</div>
+                  <div className="text-white/60 text-sm font-[DM_Sans]">{t('about.yearsExperience')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold bg-gradient-to-r from-[#18d2e4] to-[#f48101] bg-clip-text text-transparent font-[DM_Sans]">3</div>
-                  <div className="text-white/60 text-sm font-[DM_Sans]">Verticais de Negócio</div>
+                  <div className="text-white/60 text-sm font-[DM_Sans]">{t('about.businessVerticals')}</div>
                 </div>
               </div>
             </div>

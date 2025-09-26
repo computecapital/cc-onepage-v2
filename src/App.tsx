@@ -1,13 +1,16 @@
+import React from "react";
 import { CompanyCard } from "./components/CompanyCard";
 import { Hero } from "./components/Hero";
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import qrCodeImage from 'figma:asset/fe52e1ae47f6fb4067f6a58b8833bc19121cd6de.png';
 
 export default function App() {
+  const { t } = useTranslation();
   const [displayText, setDisplayText] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const fullText = "Nossas Empresas";
+  const fullText = t('hero.ourCompanies');
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   // Fade in animation on page load
@@ -59,7 +62,7 @@ export default function App() {
     }, 100);
     
     return () => clearInterval(typingInterval);
-  }, [isVisible]);
+  }, [isVisible, fullText]);
 
   return (
     <div className={`min-h-screen dark transition-opacity duration-[1500ms] ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
@@ -156,29 +159,29 @@ export default function App() {
               <span className={`text-[#18d2e4] ${isVisible ? 'animate-pulse' : ''}`}>|</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Três pilares da inovação que compõem o ecossistema Compute Capital
+              {t('hero.threePillars')}
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <CompanyCard
-              title="Investimentos"
-              description="Fundo de venture capital focado em startups de tecnologia e inovação disruptiva"
-              category="Capital de Risco"
+              title={t('companies.investimentos.title')}
+              description={t('companies.investimentos.description')}
+              category={t('companies.investimentos.category')}
               href="https://www.compute.capital/investment"
             />
             
             <CompanyCard
-              title="C2 AI Studio"
-              description="Plataforma de desenvolvimento de soluções em inteligência artificial e automação"
-              category="Software & IA"
+              title={t('companies.c2ai.title')}
+              description={t('companies.c2ai.description')}
+              category={t('companies.c2ai.category')}
               href="https://c2ai.compute.capital"
             />
             
             <CompanyCard
-              title="Solar Recife"
-              description="Energia solar fotovoltaica sustentável para residências e empresas"
-              category="Energia Renovável"
+              title={t('companies.solar.title')}
+              description={t('companies.solar.description')}
+              category={t('companies.solar.category')}
               href="https://solar.recife.compute.capital"
             />
           </div>
@@ -283,7 +286,7 @@ export default function App() {
             {/* Header Section */}
             <div className="text-center mb-8">
               <h3 className="text-2xl bg-gradient-to-r from-[#18e492] via-[#18d2e4] to-[#f48101] bg-clip-text text-transparent font-[DM_Sans] font-bold mb-2 text-[36px] font-normal">
-                Meet Compute Capital
+                {t('footer.meet')}
               </h3>
               <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-6"></div>
             </div>
@@ -292,21 +295,15 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
               {/* About Section */}
               <div className="lg:col-span-2">
-                <h4 className="text-white font-semibold font-[DM_Sans] mb-4 text-sm uppercase tracking-wider">
-                  Sobre o Grupo
-                </h4>
+                  <h4 className="text-white font-semibold font-[DM_Sans] mb-4 text-sm uppercase tracking-wider">
+                    {t('footer.aboutGroup')}
+                  </h4>
                 <div className="space-y-4">
-                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm">
-                    A <span className="bg-gradient-to-r from-[#18e492] to-[#18d2e4] bg-clip-text text-transparent font-semibold">Compute Capital</span> é um grupo brasileiro AI-Native que integra tecnologia, energia e investimentos. Atuamos no desenvolvimento de software com inteligência artificial, na geração de energia solar com fazendas no Nordeste, na operação de data centers de GPUs e investimentos em ativos físicos e alternativos.
-                  </p>
+                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: t('about.p1') }} />
                   
-                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm">
-                    Liderados por jovens empreendedores com mais de 10 anos de experiência, buscamos antecipar os desafios de 2050, criando infraestrutura e soluções que impulsionam negócios e promovem crescimento sustentável.
-                  </p>
+                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm">{t('about.p2')}</p>
                   
-                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm">
-                    Nossa <span className="bg-gradient-to-r from-[#18d2e4] to-[#f48101] bg-clip-text text-transparent font-semibold">missão</span> é conectar IA, energia e inovação para gerar impacto real no presente e no futuro.
-                  </p>
+                  <p className="text-muted-foreground font-[DM_Sans] leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: t('about.p3') }} />
                 </div>
               </div>
               
@@ -316,12 +313,12 @@ export default function App() {
                   {/* Links Section */}
                   <div className="flex-1">
                     <h4 className="text-white font-semibold font-[DM_Sans] mb-4 text-sm uppercase tracking-wider">
-                      Links Rápidos
+                      {t('footer.quickLinks')}
                     </h4>
                     <nav className="space-y-3">
                       <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="block text-muted-foreground hover:text-white hover:bg-white/5 px-3 py-2 rounded-lg transition-all duration-200 font-[DM_Sans] text-sm group">
                         <span className="flex items-center gap-2">
-                          Sobre Nós
+                          {t('footer.aboutUs')}
                           <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -329,7 +326,7 @@ export default function App() {
                       </a>
                       <a href="https://wa.me/5581999003360#" className="block text-muted-foreground hover:text-white hover:bg-white/5 px-3 py-2 rounded-lg transition-all duration-200 font-[DM_Sans] text-sm group">
                         <span className="flex items-center gap-2">
-                          Contato
+                          {t('footer.contact')}
                           <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -350,11 +347,11 @@ export default function App() {
                       <div className="grid grid-cols-2 gap-3">
                         <div className="text-center">
                           <div className="text-lg font-bold bg-gradient-to-r from-[#18e492] to-[#18d2e4] bg-clip-text text-transparent font-[DM_Sans]">10+</div>
-                          <div className="text-white/50 text-xs font-[DM_Sans]">Anos</div>
+                          <div className="text-white/50 text-xs font-[DM_Sans]">{t('footer.years')}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-lg font-bold bg-gradient-to-r from-[#18d2e4] to-[#f48101] bg-clip-text text-transparent font-[DM_Sans]">3</div>
-                          <div className="text-white/50 text-xs font-[DM_Sans]">Empresas</div>
+                          <div className="text-white/50 text-xs font-[DM_Sans]">{t('footer.companies')}</div>
                         </div>
                       </div>
                     </div>
@@ -370,7 +367,7 @@ export default function App() {
                       />
                     </div>
                     <p className="text-white/60 text-xs font-[DM_Sans] mt-2 text-center max-w-[100px]">
-                      Escaneie para acessar
+                      {t('footer.scanToAccess')}
                     </p>
                   </div>
                 </div>
@@ -386,7 +383,7 @@ export default function App() {
           
           <div className="text-center mt-6">
             <p className="text-sm text-muted-foreground">
-              © 2025 Grupo Compute Capital. Todos os direitos reservados.
+              {t('footer.copyright')}
             </p>
           </div>
           
